@@ -26,11 +26,11 @@ will not be processed.
 
 ## Diagnosis
 
-At first, check if the `KlusterletAddonConfig` exists.
+At first, check if the `KlusterletAddonConfig` with name `<cluster-name>` exists.
 Check the `KlusterletAddonConfig` on the hub cluster.
 
 ```shell
-oc get klusterletaddonconfig -n <cluster-name> -o yaml
+oc get klusterletaddonconfig -n <cluster-name> <cluster-name> -o yaml
 ```
 
 If the yaml exists, check the `spec.<addon-name>.enabled` field, the value should be `true`.
@@ -41,8 +41,13 @@ spec:
     enabled: true
 ```
 
-Then check the name of the `KlusterletAddonConfig` resource, the name should be **the same as the cluster name**, if not,
-delete the `KlusterletAddonConfig` resource and recreate it with the correct name.
+If the yaml does not exists, check if there are other `KlusterletAddonConfig` resources in the cluster namespace.
+
+```shell
+oc get klusterletaddonconfig -n <cluster-name> -o yaml
+```
+
+Note the name of the `KlusterletAddonConfig` resource should be **the same as the cluster name**, if not, delete the `KlusterletAddonConfig` resource and recreate it with the correct name.
 
 Next check if the `ManagedClusterAddon` resource existing in the cluster namespace.
 
